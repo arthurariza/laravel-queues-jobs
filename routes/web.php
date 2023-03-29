@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\BatchJob;
 use App\Jobs\ChainJob;
 use App\Jobs\PriorityJob;
 use App\Jobs\SendWelcomeEmailJob;
@@ -49,4 +50,22 @@ Route::get('/chain', function () {
     ])->onQueue('high')->dispatch();
 
    return 'Chained';
+});
+
+Route::get('/batch', function () {
+    Bus::batch([
+        new BatchJob(),
+        new BatchJob(),
+        new BatchJob(),
+    ])
+        ->onQueue('high')
+        ->then(function (Batch $batch) {
+            // All jobs completed successfully...
+        })->catch(function (Batch $batch, Throwable $e) {
+            // First batch job failure detected...
+        })->finally(function (Batch $batch) {
+            // The batch has finished executing...
+        })->dispatch();
+
+    return 'Batched';
 });
