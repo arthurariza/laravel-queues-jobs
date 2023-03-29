@@ -24,3 +24,9 @@ Route::get('/', function () {
 
     return view('welcome');
 });
+
+Route::get('/fail', function () {
+    PriorityJob::dispatch();
+
+    return view('welcome');
+});

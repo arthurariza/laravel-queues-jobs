@@ -13,6 +13,11 @@ class PriorityJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public int $tries = 3;
+    public array $backoff = [2,3,5]; // The delay after each failed attempt
+
+    public int $maxExceptions = 2;
+
     /**
      * Create a new job instance.
      */
@@ -26,8 +31,13 @@ class PriorityJob implements ShouldQueue
      */
     public function handle(): void
     {
-        sleep(3);
+        throw new \Exception('Priority Job Failed');
 
         info('Priority Job Done!');
+    }
+
+    public function failed($e)
+    {
+        info('Priority Job Failed');
     }
 }
