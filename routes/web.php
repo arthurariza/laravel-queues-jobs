@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\PriorityJob;
 use App\Jobs\SendWelcomeEmailJob;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    SendWelcomeEmailJob::dispatch();
+    foreach (range(1,10) as $item) {
+        SendWelcomeEmailJob::dispatch();
+    }
+
+    PriorityJob::dispatch();
 
     return view('welcome');
 });

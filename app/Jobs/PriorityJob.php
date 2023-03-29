@@ -9,31 +9,16 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SendWelcomeEmailJob implements ShouldQueue
+class PriorityJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * The number of seconds the job can run before timing out.
-     */
-    public int $timeout = 60; // Default
-
-    /**
-     * The number of times the job may be attempted.
-     */
-    public int $tries = 25;
-
-    /**
-     * The maximum number of unhandled exceptions to allow before failing.
-     */
-    public int $maxExceptions = 3;
 
     /**
      * Create a new job instance.
      */
     public function __construct()
     {
-        $this->onQueue('low');
+        $this->onQueue('high');
     }
 
     /**
@@ -43,6 +28,6 @@ class SendWelcomeEmailJob implements ShouldQueue
     {
         sleep(3);
 
-        info('Welcome Email Done!');
+        info('Priority Job Done!');
     }
 }
